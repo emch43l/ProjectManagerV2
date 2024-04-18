@@ -63,10 +63,7 @@ public class AuthService : IAuthService
             IList<string> roles = await _identityService.GetUserRolesByEmailAsync(user.Email!);
             string newToken = _tokenService.CreateToken(user,roles);
             
-            RefreshToken newRefreshToken = _tokenService.CreateRefreshTokenForUser();
-            await _identityService.UpdateUserRefreshTokenAsync(user, newRefreshToken);
-            
-            return new AuthResult(newToken, newRefreshToken.TokenString, user.Id);
+            return new AuthResult(newToken, user.RefreshToken.TokenString, user.Id);
         }
 
         throw new TokenValidationException();

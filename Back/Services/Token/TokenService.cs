@@ -1,9 +1,9 @@
 ﻿using System.Security.Claims;
 using System.Security.Cryptography;
-using System.Text;
 using Back.Entities;
 using Back.Exception;
 using Back.Services.Identity;
+using Back.Services.Token.Configuration;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 
@@ -14,15 +14,18 @@ public class TokenService : ITokenService
     private const int TokenLifetime = 120;
     
     private const string TokenAlgorithm = SecurityAlgorithms.HmacSha256;
-    
-    private readonly Settings _settings;
 
     private readonly IIdentityService _identityService;
 
-    public TokenService(Settings settings, IIdentityService identityService)
+    private readonly IConfiguration _configuration;
+
+    private readonly TokenValidationParameters _parameters;
+
+    public TokenService(IIdentityService identityService, IConfiguration configuration)
     {
-        _settings = settings;
         _identityService = identityService;
+        _configuration = configuration;
+        _parameters = TokenConfiguration.GetTokenValidationParameters(_configuration);
     }
 
     public RefreshToken CreateRefreshTokenForUser()
@@ -38,24 +41,25 @@ public class TokenService : ITokenService
 
     public string CreateToken(User user, IEnumerable<string> roles)
     {
+        
         SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor();
         JsonWebTokenHandler handler = new JsonWebTokenHandler();
+        
         handler.SetDefaultTimesOnTokenCreation = false;
 
         Dictionary<string, object> tokenClaims = new Dictionary<string, object>();
         
-        tokenClaims.Add(ClaimTypes.NameIdentifier, user.Id);
-        tokenClaims.Add(JwtRegisteredClaimNames.Email, user.Email);
+        tokenClaims.Add(ClaimTypes.NameIdentifier,user.Id);
         tokenClaims.Add(JwtRegisteredClaimNames.Exp, DateTimeOffset.UtcNow.AddMinutes(TokenLifetime).ToUnixTimeMilliseconds());
         tokenClaims.Add(ClaimTypes.Role, roles);
-
-
+        
         descriptor.Claims = tokenClaims;
         descriptor.NotBefore = DateTime.Now;
-        descriptor.Expires = DateTime.UtcNow.AddMinutes(TokenLifetime);
-        descriptor.Audience = _settings.Audience;
-        descriptor.Issuer = _settings.Issuer;
-        descriptor.SigningCredentials = new SigningCredentials(GetTokenSecurityKey(),TokenAlgorithm);
+        descriptor.Expires = DateTime.UtcNow.AddSeconds(10);
+        //descriptor.Expires = DateTime.UtcNow.AddMinutes(TokenLifetime);
+        descriptor.Audience = _parameters.ValidAudience;
+        descriptor.Issuer = _parameters.ValidIssuer;
+        descriptor.SigningCredentials = new SigningCredentials(_parameters.IssuerSigningKey,TokenAlgorithm);
         
         
         string token = handler.CreateToken(descriptor);
@@ -65,13 +69,9 @@ public class TokenService : ITokenService
     public async Task<ClaimsPrincipal> GetPrincipalFromToken(string token)
     {
         JsonWebTokenHandler handler = new JsonWebTokenHandler();
-        TokenValidationParameters parameters = new TokenValidationParameters();
+        TokenValidationParameters parameters = _parameters;
+        parameters.ValidateLifetime = false;
         
-        parameters.ValidateIssuerSigningKey = true;
-        parameters.IssuerSigningKey = GetTokenSecurityKey();
-        parameters.ValidIssuer = _settings.Issuer;
-        parameters.ValidAudience = _settings.Audience;
-
         TokenValidationResult result = await handler.ValidateTokenAsync(token, parameters);
         if (!result.IsValid)
         {
@@ -89,10 +89,5 @@ public class TokenService : ITokenService
             rng.GetBytes(randomNumber);
             return Convert.ToBase64String(randomNumber);
         }
-    }
-
-    private SecurityKey GetTokenSecurityKey()
-    {
-        return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.Secret));
     }
 }

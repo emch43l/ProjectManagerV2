@@ -1,9 +1,14 @@
+using System.Security.Claims;
 using Back.Db;
 using Back.Entities;
 using Back.Services.Auth;
 using Back.Services.Identity;
 using Back.Services.Token;
+using Back.Services.Token.Configuration;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,10 +33,29 @@ builder.Services.AddIdentityCore<User>(options =>
     options.Lockout.MaxFailedAccessAttempts = 3;
 }).AddRoles<Role>().AddEntityFrameworkStores<AppDbContext>();
 
+builder.Services.AddAuthorization(options =>
+{
+    options.DefaultPolicy = new AuthorizationPolicyBuilder()
+        .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+        .RequireClaim(ClaimTypes.NameIdentifier)
+        .Build();
+});
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.TokenValidationParameters = 
+        TokenConfiguration.GetTokenValidationParameters(builder.Configuration);
+});
+
 builder.Services.AddScoped<IIdentityService, IdentityService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddSingleton<Settings>();
+
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
@@ -41,7 +65,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors(options =>
+{
+    options.WithOrigins("http://localhost:5173")
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+});
 app.UseAuthorization();
+app.UseAuthentication();
+
 app.UseHttpsRedirection();
 app.MapControllers();
 app.Seed();
