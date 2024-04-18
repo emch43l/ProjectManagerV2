@@ -1,36 +1,57 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import AuthContext from "../auth/AuthContext";
-import { axiosPrivate } from "./axios";
-import useRefresh from "../auth/useRefresh";
+import { axiosPrivate } from "../axios/axios";
+import useRefresh from "./useRefresh";
 
+
+// https://www.youtube.com/watch?v=nI8PYZNFtac
 const useAxios = () => {
     const context = useContext(AuthContext)
     const refreshToken = useRefresh()
 
+    // use effect eject and then assigns new interceptors with updated tokens every component rerender
+
     useEffect(() => {
+
+        //console.log(context)
+
         const req = axiosPrivate.interceptors.request.use(request => {
+
+            // add Authorization header to requests
 
             if(!request.headers["Authorization"]) {
                 request.headers["Authorization"] = `Bearer ${context.token}`;
             }
     
             return request;
-        })
+        }, error => Promise.reject(error))
         const res = axiosPrivate.interceptors.response.use(
             response => response,
             async (error) => {
                 const prevRequest = error?.config;
                 if(error?.response?.status === 401 && prevRequest?.sent !== true) {
-                    const token = await refreshToken();
+
+                    // get & update token 
+                    const token = await refreshToken(context.token!,context.refreshToken!);
+                    context.updateToken(token);
+
+                    // update authorization header
                     prevRequest.headers["Authorization"] = `Bearer ${token}`
+
+                    // tag this request as sent
                     prevRequest.sent = true;
-                    await axiosPrivate(prevRequest);
+
+                    // return new axios instance with previous request config
+                    return axiosPrivate(prevRequest);
                 }
+
+                return Promise.reject(error);
                 
             }
         )
 
         return () => {
+            //console.log(context)
             axiosPrivate.interceptors.request.eject(req)
             axiosPrivate.interceptors.response.eject(res)
         }

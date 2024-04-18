@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import RegisterForm from "./components/RegisterForm";
 import Dashboard from "./components/Dashboard";
 import AuthProvider from "./auth/AuthProvider";
-import ProtectedRoute from "./auth/ProtectedRoute";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
     return (

@@ -1,6 +1,8 @@
 using System.Security.Claims;
 using Back.Db;
 using Back.Entities;
+using Back.Repositories;
+using Back.Services;
 using Back.Services.Auth;
 using Back.Services.Identity;
 using Back.Services.Token;
@@ -55,6 +57,10 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<IIdentityService, IdentityService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IStoryRepository, StoryRepository>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<IStoryService, StoryService>();
 
 
 var app = builder.Build();

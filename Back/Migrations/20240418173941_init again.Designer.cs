@@ -11,14 +11,29 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Back.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240416134607_added refreshTokenForUser")]
-    partial class addedrefreshTokenForUser
+    [Migration("20240418173941_init again")]
+    partial class initagain
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.4");
+
+            modelBuilder.Entity("Back.Entities.Project", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Projects");
+                });
 
             modelBuilder.Entity("Back.Entities.RefreshToken", b =>
                 {
@@ -41,7 +56,7 @@ namespace Back.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("RefreshToken");
+                    b.ToTable("Tokens");
                 });
 
             modelBuilder.Entity("Back.Entities.Role", b =>
@@ -69,6 +84,44 @@ namespace Back.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Back.Entities.Story", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("StoryState")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Stories");
                 });
 
             modelBuilder.Entity("Back.Entities.User", b =>
@@ -237,11 +290,32 @@ namespace Back.Migrations
 
             modelBuilder.Entity("Back.Entities.RefreshToken", b =>
                 {
-                    b.HasOne("Back.Entities.User", null)
+                    b.HasOne("Back.Entities.User", "User")
                         .WithOne("RefreshToken")
                         .HasForeignKey("Back.Entities.RefreshToken", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Back.Entities.Story", b =>
+                {
+                    b.HasOne("Back.Entities.Project", "Project")
+                        .WithMany("Stories")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Back.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -293,6 +367,11 @@ namespace Back.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Back.Entities.Project", b =>
+                {
+                    b.Navigation("Stories");
                 });
 
             modelBuilder.Entity("Back.Entities.User", b =>

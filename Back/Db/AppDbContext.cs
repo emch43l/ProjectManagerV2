@@ -6,7 +6,11 @@ namespace Back.Db;
 
 public class AppDbContext : IdentityDbContext<User,Role,int>
 {
-    public DbSet<RefreshToken> Tokens; 
+    public DbSet<RefreshToken> Tokens { get; set; }
+
+    public DbSet<Project> Projects { get; set; }
+
+    public DbSet<Story> Stories { get; set; }
     
     public AppDbContext(DbContextOptions options) : base(options)
     {

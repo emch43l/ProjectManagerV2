@@ -1,4 +1,7 @@
-﻿using Back.Services.Auth;
+﻿using Back.Entities;
+using Back.Services.Auth;
+using Back.Services.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RefreshRequest = Back.DTO.RefreshRequest;
 using LoginRequest = Back.DTO.LoginRequest;
@@ -11,10 +14,11 @@ namespace Back.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
-
-    public AuthController(IAuthService authService)
+    private readonly IIdentityService _identityService;
+    public AuthController(IAuthService authService, IIdentityService identityService)
     {
         _authService = authService;
+        _identityService = identityService;
     }
     
     [HttpPost]
@@ -39,5 +43,17 @@ public class AuthController : ControllerBase
     {
         AuthResult result = await _authService.RefreshToken(refreshRequest.Token,refreshRequest.RefreshToken);
         return Ok(result);
+    }
+
+    [Authorize]
+    [HttpGet]
+    [Route("user")]
+    public async Task<IActionResult> GetUser()
+    {
+        User user = await _identityService.GetUserByClaimAsync(HttpContext.User);
+        IList<string> userRoles = await _identityService.GetUserRolesByEmailAsync(user.Email);
+        return Ok(
+            new { Email = user.Email, Username = user.UserName, Roles = userRoles }
+            );
     }
 }
