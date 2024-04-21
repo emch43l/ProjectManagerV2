@@ -5,4 +5,8 @@ namespace Back.Entities;
 public class User : IdentityUser<int>
 {
     public RefreshToken? RefreshToken { get; set; }
+    
+    public ICollection<Story> Stories { get; set; }
+    
+    public ICollection<StoryTask> Tasks { get; set; }
 }

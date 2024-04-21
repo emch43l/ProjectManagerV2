@@ -24,4 +24,12 @@ public class ProjectController : ControllerBase
         IEnumerable<Project> projects = await _projectService.GetProjects();
         return Ok(projects);
     }
+
+    [HttpGet]
+    [Route("{projectId}")]
+    public async Task<IActionResult> GetProject(int projectId)
+    {
+        Project project = await _projectService.GetProjectById(projectId);
+        return Ok(project);
+    }
 }

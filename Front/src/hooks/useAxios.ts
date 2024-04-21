@@ -25,28 +25,35 @@ const useAxios = () => {
     
             return request;
         }, error => Promise.reject(error))
+
         const res = axiosPrivate.interceptors.response.use(
             response => response,
             async (error) => {
                 const prevRequest = error?.config;
                 if(error?.response?.status === 401 && prevRequest?.sent !== true) {
 
-                    // get & update token 
-                    const token = await refreshToken(context.token!,context.refreshToken!);
-                    context.updateToken(token);
+                    const {token,wasTokenValid} = await refreshToken(context.token!,context.refreshToken!);
 
-                    // update authorization header
-                    prevRequest.headers["Authorization"] = `Bearer ${token}`
+                    if(wasTokenValid === false) {
+                        context.signOut();
+                        return Promise.reject(error);
+                    }
 
-                    // tag this request as sent
-                    prevRequest.sent = true;
-
-                    // return new axios instance with previous request config
-                    return axiosPrivate(prevRequest);
+                    if(wasTokenValid === true && token !== null) {
+                        context.updateToken(token);
+    
+                        // update authorization header
+                        prevRequest.headers["Authorization"] = `Bearer ${token}`
+        
+                        // tag this request as sent
+                        prevRequest.sent = true;
+        
+                        // return new axios instance with previous request config
+                        return axiosPrivate(prevRequest);
+                    }
                 }
 
-                return Promise.reject(error);
-                
+                return Promise.reject(error);   
             }
         )
 
@@ -55,9 +62,7 @@ const useAxios = () => {
             axiosPrivate.interceptors.request.eject(req)
             axiosPrivate.interceptors.response.eject(res)
         }
-    },[context])
-
-    
+    },[context])    
 
     return axiosPrivate;
 }

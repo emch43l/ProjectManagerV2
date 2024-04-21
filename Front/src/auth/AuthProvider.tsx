@@ -1,6 +1,7 @@
 import { useState } from "react"
 import AuthContext from "./AuthContext"
 import { axiosPublic } from "../axios/axios"
+import { User } from "../type/User"
 
 const TOKEN_KEY_NAME = "token"
 const REFRESHTOKEN_KEY_NAME = "refreshtoken"
@@ -19,7 +20,7 @@ const AuthProvider = ({children} : {children: JSX.Element}) => {
     const [user,setUser] = useState<User | null>(getUserFromLocalStorage());
     const [token,setToken] = useState<string | null>(localStorage.getItem(TOKEN_KEY_NAME))
     const [refreshToken,setRefreshtoken] = useState<string | null>(localStorage.getItem(REFRESHTOKEN_KEY_NAME))
-    const [isSignedIn,setSignedIn] = useState<boolean>((!token && !refreshToken) ? false : true)
+    const [isSignedIn,setSignedIn] = useState<boolean>((!token || !refreshToken) ? false : true)
 
     const updateUser = (token: string) => {
         axiosPublic.get<User>("auth/user",{
@@ -53,13 +54,9 @@ const AuthProvider = ({children} : {children: JSX.Element}) => {
     }
 
     const signOut = () => {
-        setToken(null)
-        setRefreshtoken(null)
-
         localStorage.removeItem(TOKEN_KEY_NAME)
         localStorage.removeItem(REFRESHTOKEN_KEY_NAME)
         localStorage.removeItem(USER_KEY_NAME)
-
         setSignedIn(false)
     }
 

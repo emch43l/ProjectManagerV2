@@ -16,7 +16,7 @@ public class ProjectRepository : IProjectRepository
 
     public async Task<Project?> GetProjectById(int id)
     {
-        return await _context.Projects.FirstOrDefaultAsync(p => p.Id == id);
+        return await _context.Projects.Include(p => p.Stories).FirstOrDefaultAsync(p => p.Id == id);
     }
 
     public async Task<IEnumerable<Project>> GetAllProjects()

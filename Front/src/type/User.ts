@@ -1,5 +1,6 @@
-type User = {
-    Email: string,
-    Username: string,
-    Roles: string[]
+export type User = {
+    id: number,
+    email: string,
+    username: string,
+    roles: string[]
 }

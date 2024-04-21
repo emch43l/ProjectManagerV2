@@ -1,4 +1,7 @@
-type Project = {
+import { Story } from "./Story"
+
+export type Project = {
     id: number,
-    name: string
+    name: string,
+    stories: Story[]
 }

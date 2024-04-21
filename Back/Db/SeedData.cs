@@ -1,5 +1,7 @@
 ﻿using Back.Entities;
+using Back.Entities.Enums;
 using Microsoft.AspNetCore.Identity;
+using Task = System.Threading.Tasks.Task;
 
 namespace Back.Db;
 
@@ -29,7 +31,6 @@ public static class SeedData
             Project p1 = CreateProjectOne(new List<User>([admin, developer, devops]));
             Project p2 = CreateProjectTwo(new List<User>([admin, developer, devops]));
             Project p3 = CreateProjectThree(new List<User>([admin, developer, devops]));
-            
             await context.Projects.AddRangeAsync([p1, p2, p3]);
 ;           await context.SaveChangesAsync();
 
@@ -67,8 +68,8 @@ public static class SeedData
                 {
                     Name = "Story 1",
                     Description = "Story 1 description",
-                    StoryState = StoryState.Doing,
-                    Priority = StoryPriority.High,
+                    State = State.Doing,
+                    Priority = Priority.High,
                     UserId = users[0].Id,
                     CreationDate = DateTime.Now,
 
@@ -77,8 +78,8 @@ public static class SeedData
                 {
                     Name = "Story 2",
                     Description = "Story 2 description",
-                    StoryState = StoryState.Doing,
-                    Priority = StoryPriority.Low,
+                    State = State.Doing,
+                    Priority = Priority.Low,
                     UserId = users[1].Id,
                     CreationDate = DateTime.Now,
 
@@ -87,8 +88,8 @@ public static class SeedData
                 {
                     Name = "Story 3",
                     Description = "Story 3 description",
-                    StoryState = StoryState.Doing,
-                    Priority = StoryPriority.Low,
+                    State = State.Doing,
+                    Priority = Priority.Low,
                     UserId = users[0].Id,
                     CreationDate = DateTime.Now,
 
@@ -97,8 +98,8 @@ public static class SeedData
                 {
                     Name = "Story 4",
                     Description = "Story 4 description",
-                    StoryState = StoryState.Doing,
-                    Priority = StoryPriority.Medium,
+                    State = State.Doing,
+                    Priority = Priority.Medium,
                     UserId = users[1].Id,
                     CreationDate = DateTime.Now,
 
@@ -107,8 +108,8 @@ public static class SeedData
                 {
                     Name = "Story 5",
                     Description = "Story 5 description",
-                    StoryState = StoryState.Doing,
-                    Priority = StoryPriority.Low,
+                    State = State.Doing,
+                    Priority = Priority.Low,
                     UserId = users[2].Id,
                     CreationDate = DateTime.Now,
                 },
@@ -126,8 +127,8 @@ public static class SeedData
                 {
                     Name = "Story 1",
                     Description = "Story 1 description",
-                    StoryState = StoryState.Todo,
-                    Priority = StoryPriority.Low,
+                    State = State.Todo,
+                    Priority = Priority.Low,
                     UserId = users[1].Id,
                     CreationDate = DateTime.Now.Subtract(TimeSpan.FromHours(1000)),
                 },
@@ -135,8 +136,8 @@ public static class SeedData
                 {
                     Name = "Story 2",
                     Description = "Story 2 description",
-                    StoryState = StoryState.Todo,
-                    Priority = StoryPriority.Low,
+                    State = State.Todo,
+                    Priority = Priority.Low,
                     UserId = users[2].Id,
                     CreationDate = DateTime.Now.Subtract(TimeSpan.FromHours(100)),
 
@@ -145,8 +146,8 @@ public static class SeedData
                 {
                     Name = "Story 3",
                     Description = "Story 3 description",
-                    StoryState = StoryState.Todo,
-                    Priority = StoryPriority.Low,
+                    State = State.Todo,
+                    Priority = Priority.Low,
                     UserId = users[0].Id,
                     CreationDate = DateTime.Now.Subtract(TimeSpan.FromHours(2137)),
 
@@ -165,8 +166,8 @@ public static class SeedData
                 {
                     Name = "Story 1",
                     Description = "Story 1 description",
-                    StoryState = StoryState.Todo,
-                    Priority = StoryPriority.High,
+                    State = State.Todo,
+                    Priority = Priority.High,
                     UserId = users[0].Id,
                     CreationDate = DateTime.Now,
                 },
@@ -174,8 +175,8 @@ public static class SeedData
                 {
                     Name = "Story 2",
                     Description = "Story 2 description",
-                    StoryState = StoryState.Doing,
-                    Priority = StoryPriority.High,
+                    State = State.Doing,
+                    Priority = Priority.High,
                     UserId = users[2].Id,
                     CreationDate = DateTime.Now,
 

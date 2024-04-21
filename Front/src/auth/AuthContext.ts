@@ -1,4 +1,5 @@
 import { createContext } from "react";
+import { User } from "../type/User";
 
 const AuthContext = createContext<Auth>({
     isSignedIn: false,

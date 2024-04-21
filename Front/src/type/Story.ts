@@ -1,20 +1,20 @@
-type Story = {
-    Id: string,
-    Name: string,
-    Description: string,
-    DateCreated: Date,
-    Priority: StoryPriority,
-    State: StoryState
+export type Story = {
+    id: string,
+    name: string,
+    description: string,
+    creationDate: string,
+    priority: StoryPriority,
+    state: StoryState
 }
 
-enum StoryPriority
+export enum StoryPriority
 {
     Low,
     Medium,
     High
 }
 
-enum StoryState
+export enum StoryState
 {
     Todo,
     Doing,

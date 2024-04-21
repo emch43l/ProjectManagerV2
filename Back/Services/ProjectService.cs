@@ -1,11 +1,12 @@
 ﻿using Back.Entities;
+using Back.Exception;
 using Back.Repositories;
 
 namespace Back.Services;
 
 public class ProjectService : IProjectService
 {
-    public readonly IProjectRepository _projectRepository;
+    private readonly IProjectRepository _projectRepository;
 
     public ProjectService(IProjectRepository projectRepository)
     {
@@ -15,5 +16,12 @@ public class ProjectService : IProjectService
     public async Task<IEnumerable<Project>> GetProjects()
     {
         return await _projectRepository.GetAllProjects();
+    }
+
+    public async Task<Project> GetProjectById(int id)
+    {
+        return 
+            await _projectRepository.GetProjectById(id) ?? 
+            throw new ProjectNotFoundException();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Back.Entities;
+using Back.Exception;
 using Back.Services.Auth;
 using Back.Services.Identity;
 using Microsoft.AspNetCore.Authorization;
@@ -41,8 +42,16 @@ public class AuthController : ControllerBase
     [Route("refresh")]
     public async Task<IActionResult> Login([FromBody] RefreshRequest refreshRequest)
     {
-        AuthResult result = await _authService.RefreshToken(refreshRequest.Token,refreshRequest.RefreshToken);
-        return Ok(result);
+        try
+        {
+            AuthResult result = await _authService.RefreshToken(refreshRequest.Token,refreshRequest.RefreshToken);
+            return Ok(result);
+        }
+        catch (TokenValidationException e)
+        {
+            return Unauthorized();
+        }
+        
     }
 
     [Authorize]

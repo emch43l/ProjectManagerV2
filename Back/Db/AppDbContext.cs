@@ -12,6 +12,8 @@ public class AppDbContext : IdentityDbContext<User,Role,int>
 
     public DbSet<Story> Stories { get; set; }
     
+    public DbSet<StoryTask> Tasks { get; set; }
+    
     public AppDbContext(DbContextOptions options) : base(options)
     {
         
