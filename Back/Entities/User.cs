@@ -6,7 +6,7 @@ public class User : IdentityUser<int>
 {
     public RefreshToken? RefreshToken { get; set; }
     
-    public ICollection<Story> Stories { get; set; }
+    public List<Story> Stories { get; set; }
     
-    public ICollection<StoryTask> Tasks { get; set; }
+    public List<StoryTask> Tasks { get; set; }
 }

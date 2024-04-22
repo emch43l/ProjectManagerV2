@@ -15,7 +15,7 @@ public class StoryRepository : IStoryRepository
 
     public async Task<Story?> GetStoryById(int id)
     {
-        return await _context.Stories.FirstOrDefaultAsync(s => s.Id == id);
+        return await _context.Stories.Include(s => s.Tasks).ThenInclude(t => t.User).FirstOrDefaultAsync(s => s.Id == id);
     }
 
     public async Task<IEnumerable<Story>> GetProjectStories(int projectId)

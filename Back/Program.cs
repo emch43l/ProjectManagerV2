@@ -1,4 +1,6 @@
+using System.Reflection;
 using System.Security.Claims;
+using System.Text.Json.Serialization;
 using Back.Db;
 using Back.Entities;
 using Back.Repositories;
@@ -18,7 +20,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlite(
@@ -61,6 +66,7 @@ builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<IStoryRepository, StoryRepository>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IStoryService, StoryService>();
+builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(Program)));
 
 
 var app = builder.Build();

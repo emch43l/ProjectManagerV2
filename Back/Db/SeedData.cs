@@ -72,6 +72,43 @@ public static class SeedData
                     Priority = Priority.High,
                     UserId = users[0].Id,
                     CreationDate = DateTime.Now,
+                    Tasks = new List<StoryTask>([
+                        new StoryTask()
+                        {
+                            Id = 1,
+                            Name = "Task 1",
+                            Description = "Task 1 Description",
+                            State = State.Todo,
+                            UserId = 2,
+                            CreationDate = DateTime.Now,
+                        },
+                        new StoryTask()
+                        {
+                            Id = 2,
+                            Name = "Task 2",
+                            Description = "Task 2 Description",
+                            State = State.Doing,
+                            UserId = 3,
+                            CreationDate = DateTime.Now,
+                        },
+                        new StoryTask()
+                        {
+                            Id = 3,
+                            Name = "Task 3",
+                            Description = "Task 3 Description",
+                            State = State.Done,
+                            UserId = 2,
+                            CreationDate = DateTime.Now,
+                        },
+                        new StoryTask()
+                        {
+                            Id = 4,
+                            Name = "Task 4",
+                            Description = "Task 4 Description",
+                            State = State.Todo,
+                            UserId = 3,
+                            CreationDate = DateTime.Now,
+                        }])
 
                 },
                 new Story()
@@ -131,6 +168,44 @@ public static class SeedData
                     Priority = Priority.Low,
                     UserId = users[1].Id,
                     CreationDate = DateTime.Now.Subtract(TimeSpan.FromHours(1000)),
+                    Tasks = new List<StoryTask>([
+                        new StoryTask()
+                        {
+                            Id = 5,
+                            Name = "Task 1",
+                            Description = "Task 1 Description",
+                            State = State.Todo,
+                            UserId = 2,
+                            CreationDate = DateTime.Now,
+                        },
+                        new StoryTask()
+                        {
+                            Id = 6,
+                            Name = "Task 2",
+                            Description = "Task 2 Description",
+                            State = State.Doing,
+                            UserId = 3,
+                            CreationDate = DateTime.Now,
+                        },
+                        new StoryTask()
+                        {
+                            Id = 7,
+                            Name = "Task 3",
+                            Description = "Task 3 Description",
+                            State = State.Done,
+                            UserId = 2,
+                            CreationDate = DateTime.Now,
+                        },
+                        new StoryTask()
+                        {
+                            Id = 8,
+                            Name = "Task 4",
+                            Description = "Task 4 Description",
+                            State = State.Todo,
+                            UserId = 3,
+                            CreationDate = DateTime.Now,
+                        }
+                    ])
                 },
                 new Story()
                 {

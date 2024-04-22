@@ -8,6 +8,9 @@ import useModal from "../hooks/useModal";
 import ManageStoryModal from "./modals/ManageStoryModal";
 import ModalCard from "./modals/ModalCard";
 import { Story, StoryState } from "../type/Story";
+import KanbanTable from "./KanbanTable";
+import KanbanTableColumn from "./KanbanTableColumn";
+import KanbanTableColumnDivider from "./KanbanTableColumnDivider";
 
 type ProjectDetailsParams = {
     projectId: string
@@ -58,43 +61,36 @@ const PorjectDetails = () => {
     return (
         project === null ? null :  
         <>
-            <div>   
-                <h1 className="font-bold text-xl text-gray-800">{project.name}</h1>
-                <button onClick={addStory}>Add Story</button>
-                <div className="mt-5">
-                    <h2 className="font-medium text-lg text-gray-800">Stories</h2>
-                    <div className="h-[1px] bg-black opacity-10 my-5"></div>
-                    <div className="flex">
-                        <div className="w-full">
-                            <h1 className="px-2 font-bold text-xl text-center text-gray-500">Todo</h1>
-                            <div className="flex">
-                            {project.stories.filter(s => s.state == StoryState.Todo).map((s,i) => 
-                                <StoryEntry key={i} story={s} editStoryCallback={() => editStory(s)} deleteStoryCallback={() => deleteStory(s)}/>
-                            )}
-                            </div>
-                        </div>
-                        <div className="w-[2px] bg-black opacity-10 mx-5"></div>
-                        <div className="w-full">
-                            <h1 className="px-2 font-bold text-xl text-center text-gray-500">Doing</h1>
-                            <div className="flex">
-                            {project.stories.filter(s => s.state == StoryState.Doing).map((s,i) => 
-                                <StoryEntry key={i} story={s} editStoryCallback={() => editStory(s)} deleteStoryCallback={() => deleteStory(s)}/>
-                            )}
-                            </div>
-                        </div>
-                        <div className="w-[2px] bg-black opacity-10 mx-5"></div>
-                        <div className="w-full">
-                            <h1 className="px-2 font-bold text-xl text-center text-gray-500">Done</h1>
-                            <div className="flex">
-                            {project.stories.filter(s => s.state == StoryState.Done).map((s,i) => 
-                                <StoryEntry key={i} story={s} editStoryCallback={() => editStory(s)} deleteStoryCallback={() => deleteStory(s)}/>
-                            )}
-                            </div>
-                        </div>
-                    </div>
-                    <div className="h-[1px] bg-black opacity-10 my-5"></div>
+            <div className="flex items-center justify-center mt-5">
+                <div className="-mb-10 bg-white z-10 px-10 py-1 border-slate-300 border-[1px] rounded-md font-semibold">
+                    <span>{project.name} - Stories Table</span>
+                </div>
+                <div className="-mb-10 z-10 px-5 py-1 rounded-md font-semibold">
+                    <button onClick={addStory} className=" bg-green-200 px-4 py-1 rounded-md text-green-900 border-green-700 border-[1px]">
+                        Add             
+                    </button>
                 </div>
             </div>
+                
+            <KanbanTable>
+                <KanbanTableColumn label="Todo" width="w-[33vw]">
+                    {project.stories.filter(s => s.state == StoryState.Todo).map((s,i) => 
+                        <StoryEntry key={i} story={s} editStoryCallback={() => editStory(s)} deleteStoryCallback={() => deleteStory(s)}/>
+                    )}
+                </KanbanTableColumn>
+                <KanbanTableColumnDivider/>
+                <KanbanTableColumn label="Doing" width="w-[33vw]">
+                    {project.stories.filter(s => s.state == StoryState.Doing).map((s,i) => 
+                        <StoryEntry key={i} story={s} editStoryCallback={() => editStory(s)} deleteStoryCallback={() => deleteStory(s)}/>
+                    )}
+                </KanbanTableColumn>
+                <KanbanTableColumnDivider/>
+                <KanbanTableColumn label="Done" width="w-[33vw]">
+                    {project.stories.filter(s => s.state == StoryState.Done).map((s,i) => 
+                        <StoryEntry key={i} story={s} editStoryCallback={() => editStory(s)} deleteStoryCallback={() => deleteStory(s)}/>
+                    )}
+                </KanbanTableColumn>
+            </KanbanTable>
 
             <Outlet/>
 

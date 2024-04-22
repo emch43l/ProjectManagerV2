@@ -1,10 +1,13 @@
+import { Task } from "./Task";
+
 export type Story = {
     id: string,
     name: string,
     description: string,
     creationDate: string,
     priority: StoryPriority,
-    state: StoryState
+    state: StoryState,
+    tasks: Task[],
 }
 
 export enum StoryPriority

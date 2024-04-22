@@ -16,7 +16,7 @@ public class AppDbContext : IdentityDbContext<User,Role,int>
     
     public AppDbContext(DbContextOptions options) : base(options)
     {
-        
+        this.ChangeTracker.LazyLoadingEnabled = false;
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

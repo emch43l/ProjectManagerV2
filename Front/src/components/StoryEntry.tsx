@@ -14,7 +14,7 @@ const StoryEntry = ({story,editStoryCallback,deleteStoryCallback} : {story: Stor
                 </div>
                 <div className="mt-2">
                     <div className="text-xs text-slate-500">Description</div>
-                    <div className="font-thin">{story.description}</div>
+                    <div className="font-thin max-h-[150px] overflow-y-auto">{story.description}</div>
                 </div>
                 <div className="mt-2">
                     <div className="text-xs text-slate-500">Priority</div>
@@ -30,9 +30,9 @@ const StoryEntry = ({story,editStoryCallback,deleteStoryCallback} : {story: Stor
                 </div>
                 <div className="bg-black opacity-5 h-[1px] my-4"></div>
                 <div className="flex justify-between mt-2">
-                    <button className="px-3 bg-slate-200 rounded-sm py-1 text-slate-600" onClick={editStoryCallback}>Edit</button>
-                    <button className="px-3 bg-slate-200 rounded-sm py-1 text-slate-600" onClick={() => navigate(`story/${story.id}`)}>Tasks</button>
-                    <button className="px-3 bg-slate-200 rounded-sm py-1 text-slate-600" onClick={deleteStoryCallback}>Delete</button>
+                    <button className="px-3 bg-slate-200 rounded-sm py-1 mx-1 text-slate-600" onClick={editStoryCallback}>Edit</button>
+                    <button className="px-3 bg-slate-200 rounded-sm py-1 mx-1 text-slate-600" onClick={() => navigate(`story/${story.id}`)}>Tasks</button>
+                    <button className="px-3 bg-slate-200 rounded-sm py-1 mx-1 text-slate-600" onClick={deleteStoryCallback}>Delete</button>
                 </div>
             </div>
         </div>

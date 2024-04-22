@@ -1,8 +1,9 @@
-﻿using Back.Entities.Enums;
+﻿using Back.Entities;
+using Back.Entities.Enums;
 
-namespace Back.Entities;
+namespace Back.DTO.Response;
 
-public class StoryTask
+public class TaskResponse
 {
     public int Id { get; set; }
     
@@ -18,10 +19,5 @@ public class StoryTask
     
     public DateTime? EndDate { get; set; }
     
-    public int StoryId { get; set; }
-    
-    public int? UserId { get; set; }
-    
-    public User? User { get; set; }
-    
+    public UserResponse? User { get; set; }
 }

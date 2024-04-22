@@ -1,5 +1,7 @@
 ﻿using System.Security.Claims;
+using AutoMapper;
 using Back.DTO;
+using Back.DTO.Response;
 using Back.Entities;
 using Back.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -13,10 +15,12 @@ namespace Back.Controllers;
 public class StoryController : ControllerBase
 {
     private readonly IStoryService _storyService;
+    private readonly IMapper _mapper;
 
-    public StoryController(IStoryService storyService)
+    public StoryController(IStoryService storyService, IMapper mapper)
     {
         _storyService = storyService;
+        _mapper = mapper;
     }
 
     [HttpGet]
@@ -24,7 +28,8 @@ public class StoryController : ControllerBase
     public async Task<IActionResult> GetStory(int storyId)
     {
         Story story = await _storyService.GetStory(storyId);
-        return Ok(story);
+        StoryResponse response = _mapper.Map<StoryResponse>(story);
+        return Ok(response);
     }
 
     [HttpPut]

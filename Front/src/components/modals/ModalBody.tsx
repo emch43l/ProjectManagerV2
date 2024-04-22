@@ -23,7 +23,7 @@ const ModalBody = ({params, children} : {params: UseModalParams, children: JSX.E
         <ModalContext.Provider value={{isOpen: isOpen, open: open, close: close}}>
             {
                 isOpen ? 
-                <div className="fixed h-full w-full inset-0">
+                <div className="fixed h-full w-full inset-0 z-20">
                     <div className="absolute inset-0 bg-black opacity-20" ></div>
                     <div ref={bodyRef} className="absolute h-full w-full flex items-center justify-center" onClick={(e) => closeModal(e.target)}>
                         {children}
