@@ -81,6 +81,7 @@ public static class SeedData
                             State = State.Todo,
                             UserId = 2,
                             CreationDate = DateTime.Now,
+                            ExpectedDate = DateTime.Now.AddDays(4)
                         },
                         new StoryTask()
                         {
@@ -90,6 +91,8 @@ public static class SeedData
                             State = State.Doing,
                             UserId = 3,
                             CreationDate = DateTime.Now,
+                            StartDate = DateTime.Now.AddDays(2),
+                            ExpectedDate = DateTime.Now.AddDays(3),
                         },
                         new StoryTask()
                         {
@@ -97,6 +100,9 @@ public static class SeedData
                             Name = "Task 3",
                             Description = "Task 3 Description",
                             State = State.Done,
+                            EndDate = DateTime.Now.AddDays(10),
+                            ExpectedDate = DateTime.Now.AddDays(7),
+                            StartDate = DateTime.Now.AddDays(1),
                             UserId = 2,
                             CreationDate = DateTime.Now,
                         },
@@ -108,6 +114,7 @@ public static class SeedData
                             State = State.Todo,
                             UserId = 3,
                             CreationDate = DateTime.Now,
+                            ExpectedDate = DateTime.Now.AddDays(5)
                         }])
 
                 },
@@ -177,6 +184,7 @@ public static class SeedData
                             State = State.Todo,
                             UserId = 2,
                             CreationDate = DateTime.Now,
+                            ExpectedDate = DateTime.Now.AddDays(20)
                         },
                         new StoryTask()
                         {
@@ -186,6 +194,8 @@ public static class SeedData
                             State = State.Doing,
                             UserId = 3,
                             CreationDate = DateTime.Now,
+                            ExpectedDate = DateTime.Now.AddDays(9),
+                            StartDate = DateTime.Now.AddDays(3)
                         },
                         new StoryTask()
                         {
@@ -195,6 +205,9 @@ public static class SeedData
                             State = State.Done,
                             UserId = 2,
                             CreationDate = DateTime.Now,
+                            StartDate = DateTime.Now.AddDays(1),
+                            EndDate = DateTime.Now.AddDays(5),
+                            ExpectedDate = DateTime.Now.AddDays(2)
                         },
                         new StoryTask()
                         {
@@ -204,6 +217,7 @@ public static class SeedData
                             State = State.Todo,
                             UserId = 3,
                             CreationDate = DateTime.Now,
+                            ExpectedDate = DateTime.Now.AddDays(10)
                         }
                     ])
                 },

@@ -58,7 +58,8 @@ public class TaskService : ITaskService
             StoryId = request.StoryId,
             UserId = request.UserId,
             CreationDate = request.CreationDate,
-            State = State.Todo
+            State = State.Todo,
+            ExpectedDate = request.ExpectedEndTime
         };
 
         StoryTask createdTask = await _taskRepository.CreateTask(task);

@@ -15,6 +15,7 @@ export type ManageStoryModalParams = {
 
 
 const ManageStoryModal = ({story,project,onSubmitCallback}: ManageStoryModalParams) => {
+    
     const axios = useAxios();
 
     const [name,setName] = useState<string>(story?.name ?? "")

@@ -1,13 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { Task, TaskState } from "../type/Task";
-import EditTaskModal from "./modals/EditTaskModal";
+import EditTaskModal from "./modals/ManageTaskModal";
 import ModalCard from "./modals/ModalCard";
 import ModalBody from "./modals/ModalBody";
 import useModal from "../hooks/useModal";
+import ManageTaskModal from "./modals/ManageTaskModal";
 
-const TaskEntry = ({task} : {task: Task}) => {
-
-    const modalParams = useModal();
+const TaskEntry = ({task,deleteTaskCallback,editTaskCallback} : {task: Task, deleteTaskCallback: () => void,editTaskCallback: () => void}) => {
 
     return (
         <div className="p-4 m-2 bg-yellow-100 rounded-md shadow-md w-[250px]">
@@ -37,24 +36,19 @@ const TaskEntry = ({task} : {task: Task}) => {
                 <div className="mt-2 flex justify-between">
                     <div>
                         <div className="text-xs text-yellow-600">Start date</div>
-                        <div className="font-thin text-xs">{new Date(task.creationDate).toDateString()}</div>
+                        <div className="font-thin text-xs">{task.startDate ? new Date(task.startDate ?? "").toDateString() : "-" }</div>
                     </div>
                     <div>
                         <div className="text-xs text-yellow-600">Finish date</div>
-                        <div className="font-thin text-xs">{new Date(task.creationDate).toDateString()}</div>
+                        <div className="font-thin text-xs">{task.endDate ? new Date(task.endDate ?? "").toDateString() : "-"}</div>
                     </div>
                 </div>
                 <div className="bg-black opacity-5 h-[1px] my-4"></div>
                 <div className="flex justify-between mt-2">
-                    <button className="px-3 bg-yellow-200 rounded-sm py-1 mx-1 text-yellow-700" onClick={modalParams.open} >Edit</button>
-                    <button className="px-3 bg-yellow-200 rounded-sm py-1 mx-1 text-yellow-700">Delete</button>
+                    <button className="px-3 bg-yellow-200 rounded-sm py-1 mx-1 text-yellow-700" onClick={editTaskCallback}>Edit</button>
+                    <button className="px-3 bg-yellow-200 rounded-sm py-1 mx-1 text-yellow-700" onClick={deleteTaskCallback}>Delete</button>
                 </div>
             </div>
-            <ModalBody params={modalParams}>
-                <ModalCard>
-                    <EditTaskModal/>
-                </ModalCard>
-            </ModalBody>
         </div>
         
     )

@@ -8,6 +8,7 @@ export type Task = {
     creationDate: string,
     startDate: string | null,
     endDate: string | null,
+    expectedDate: string,
     storyId: number,
     userId: number,
     user: User

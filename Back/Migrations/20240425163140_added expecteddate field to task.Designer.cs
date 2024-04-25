@@ -3,6 +3,7 @@ using System;
 using Back.Db;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Back.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240425163140_added expecteddate field to task")]
+    partial class addedexpecteddatefieldtotask
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.4");
@@ -137,7 +140,7 @@ namespace Back.Migrations
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("ExpectedDate")
+                    b.Property<DateTime?>("ExpectedDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")

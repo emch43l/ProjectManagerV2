@@ -64,8 +64,10 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<IStoryRepository, StoryRepository>();
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IStoryService, StoryService>();
+builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(Program)));
 
 

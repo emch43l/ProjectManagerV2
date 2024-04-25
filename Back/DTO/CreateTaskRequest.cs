@@ -12,8 +12,6 @@ public class CreateTaskRequest
     
     public DateTime ExpectedEndTime { get; set; }
     
-    public State State { get; set; }
-    
     public DateTime CreationDate { get; set; }
     
     public int UserId { get; set; }
