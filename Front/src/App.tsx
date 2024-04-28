@@ -6,21 +6,25 @@ import AuthProvider from "./auth/AuthProvider";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PorjectDetails from "./components/ProjectDetails";
 import StoryDetails from "./components/StoryDetails";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
     return (
         <AuthProvider>
-            <BrowserRouter>
-                <Routes>
-                    <Route path={DEFAULT_LOGIN_COMPONENT_ROUTE_PATH} element={<LoginForm/>}/>
-                    <Route path="register" element={<RegisterForm/>}/>
-                    <Route path="dashboard" element={<ProtectedRoute><Dashboard/></ProtectedRoute>}>
-                        <Route path="project/:projectId" element={<PorjectDetails/>}>
-                            <Route path="story/:storyId" element={<StoryDetails/>}/>
+            <>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path={DEFAULT_LOGIN_COMPONENT_ROUTE_PATH} element={<LoginForm/>}/>
+                        <Route path="register" element={<RegisterForm/>}/>
+                        <Route path="dashboard" element={<ProtectedRoute><Dashboard/></ProtectedRoute>}>
+                            <Route path="project/:projectId" element={<PorjectDetails/>}>
+                                <Route path="story/:storyId" element={<StoryDetails/>}/>
+                            </Route>
                         </Route>
-                    </Route>
-                </Routes>
-            </BrowserRouter>
+                    </Routes>
+                </BrowserRouter>
+                <Toaster/>
+            </>
         </AuthProvider>
     )
 }

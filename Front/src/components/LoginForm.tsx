@@ -2,6 +2,9 @@ import { useState } from "react";
 import { axiosPublic } from "../axios/axios";
 import { useNavigate } from "react-router-dom";
 import useSignIn from "../hooks/useSignIn";
+import Card from "./Card";
+import Center from "./Center";
+import toast from "react-hot-toast";
 
 const LoginForm = () => {
 
@@ -19,23 +22,39 @@ const LoginForm = () => {
         }).then(response => {
             login(response.data.token,response.data.refreshToken)
             navigate("/dashboard")
-        }).catch(console.log)
+        }).catch((e) => {
+            console.log(e)
+            toast.error("Login error !")
+        })
         
     }
 
     return (
-        <div>
-            <div>
-                <h1>Login form</h1>
+        <Center>
+            <Card>
                 <div>
-                    <form>
-                        <input type="text" value={email ?? ""} onChange={(e) => setEmail(e.target.value)} />
-                        <input type="text" value={password ?? ""} onChange={(e) => setPassword(e.target.value)} />
-                        <button onClick={(e) => handleForm(e)}>Login</button>
-                    </form>
+                    <div className="">
+                        <h1 className="mb-6 text-2xl font-bold text-center text-slate-700">Login</h1>
+                        <div>
+                            <form>
+                                <div className="mt-2">
+                                    <label className="block text-sm text-gray-400" htmlFor="email">Email</label>
+                                    <input className="bg-gray-100 rounded-md" id="email" type="text" value={email ?? ""} onChange={(e) => setEmail(e.target.value)} />
+                                </div>
+                                <div className="mt-2">
+                                    <label className="block text-sm text-gray-400" htmlFor="password">Password</label>
+                                    <input className="bg-gray-100 rounded-md" id="password" type="password" value={password ?? ""} onChange={(e) => setPassword(e.target.value)} />
+                                </div>
+                                <div className="flex justify-center mt-8">
+                                    <button className="bg-slate-400 text-white font-bold text-md px-4 py-1 rounded-md" onClick={(e) => handleForm(e)}>Login</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
+            </Card>
+        </Center>
+       
     )
 }
 
