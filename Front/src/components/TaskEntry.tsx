@@ -1,10 +1,4 @@
-import { useNavigate } from "react-router-dom";
 import { Task, TaskState } from "../type/Task";
-import EditTaskModal from "./modals/ManageTaskModal";
-import ModalCard from "./modals/ModalCard";
-import ModalBody from "./modals/ModalBody";
-import useModal from "../hooks/useModal";
-import ManageTaskModal from "./modals/ManageTaskModal";
 
 const TaskEntry = ({task,deleteTaskCallback,editTaskCallback} : {task: Task, deleteTaskCallback: () => void,editTaskCallback: () => void}) => {
 
