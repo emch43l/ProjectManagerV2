@@ -1,4 +1,5 @@
-﻿using Back.Entities;
+﻿using Back.DTO;
+using Back.Entities;
 using Back.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,5 +32,28 @@ public class ProjectController : ControllerBase
     {
         Project project = await _projectService.GetProjectById(projectId);
         return Ok(project);
+    }
+    
+    [HttpDelete]
+    [Route("{projectId}")]
+    public async Task<IActionResult> DeleteProject(int projectId)
+    {
+        await _projectService.DeleteProject(projectId);
+        return Ok();
+    }
+    
+    [HttpPut]
+    [Route("{projectId}")]
+    public async Task<IActionResult> UpdateProject([FromBody] ProjectRequest request, int projectId)
+    {
+        await _projectService.UpdateProject(request,projectId);
+        return Ok();
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> CreateProject([FromBody] ProjectRequest request)
+    {
+        await _projectService.CreateProject(request);
+        return Ok();
     }
 }
